@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+/* making scrollbar invisible */
+*{
+    scrollbar-width: none;
+    
+}
+::-webkit-scrollbar{
+    display: none;
+}
