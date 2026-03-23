@@ -20,6 +20,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [postType, setPostType] = useState('posts')
   console.log(userData.saved)
+  const [showList, setShowList] = useState(null)
   // Fetch profile data
   useEffect(() => {
     const fetchProfile = async () => {
@@ -119,7 +120,7 @@ const Profile = () => {
             </div>
 
             {/* Friends */}
-            <div className="text-center">
+            <div onClick={() => setShowList('friends')} className="text-center cursor-pointer">
               <div className="flex -space-x-3 justify-center items-center mb-1">
                 {mutualFriends.slice(0, 3).map(friend => (
                   <div key={friend._id} className="w-10 h-10 rounded-full overflow-hidden border-2 border-white">
@@ -140,7 +141,7 @@ const Profile = () => {
             </div>
 
             {/* Following */}
-            <div className="text-center">
+            <div onClick={() => setShowList('following')} className="text-center cursor-pointer">
               <div className="flex -space-x-3 justify-center items-center mb-1">
                 {profileData?.following?.slice(0, 3).map(user => (
                   <div key={user._id} className="w-10 h-10 rounded-full overflow-hidden border-2 border-white">
@@ -182,11 +183,11 @@ const Profile = () => {
                 targetUserId={profileData?._id}
                 tailwind="px-6 py-2 bg-amber-600 text-white font-semibold rounded-2xl hover:bg-amber-700 transition"
               />
-              <button onClick={()=>{
+              <button onClick={() => {
                 dispatch(setSelectedUser(profileData))
                 navigate('/messageArea')
               }}
-              className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-2xl hover:bg-gray-700 transition">
+                className="px-6 py-2 bg-gray-600 text-white font-semibold rounded-2xl hover:bg-gray-700 transition">
                 Message
               </button>
             </>
@@ -246,6 +247,39 @@ const Profile = () => {
 
         </div>
       </div>
+
+      {showList && (
+        <div className="fixed inset-0 bg-gray-200 bg-opacity-40 flex justify-center items-center z-50">
+
+          <div className="bg-white w-[90%] max-w-md rounded-2xl p-5 max-h-[70vh] overflow-y-auto">
+
+            {/* Header */}
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">
+                {showList === "friends" ? "Friends" : "Following"}
+              </h2>
+              <button onClick={() => setShowList(null)} className="text-red-500">Close</button>
+            </div>
+
+            {/* List */}
+            {(showList === "friends" ? mutualFriends : profileData.following)?.map(user => (
+              <div key={user._id} className="flex items-center gap-3 p-2 hover:bg-gray-100 rounded-lg">
+
+                <img
+                  src={user.profilePic || profile}
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+
+                <div className="text-sm font-medium text-gray-700">
+                  {user.name}
+                </div>
+
+              </div>
+            ))}
+
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -19,6 +19,7 @@ const userSlice = createSlice({
     reducers: {
         setUserData: (state, action) => {
             state.userData = action.payload
+            state.following = action.payload.following || []
         },
         setSuggestedUsers: (state, action) => {
             state.suggestedUsers = action.payload
@@ -35,16 +36,16 @@ const userSlice = createSlice({
         setFriends:(state,action)=>{
             state.friends=action.payload
         },
-        toggleFollow:(state,action)=>{
-            const targetUserId=action.payload
-            if(state.following.includes(targetUserId)){
-                state.following=state.following.filter(id=>id!=targetUserId)
-            }else{
-                state.following.push(targetUserId)
-            }
+        // toggleFollow:(state,action)=>{
+        //     const targetUserId=action.payload
+        //     if(state.following.includes(targetUserId)){
+        //         state.following=state.following.filter(id=>id!=targetUserId)
+        //     }else{
+        //         state.following.push(targetUserId)
+        //     }
             
 
-        },
+        // },
         setSearchData:(state,action)=>{
             state.searchData=action.payload
         },
@@ -61,7 +62,7 @@ export const {
     setSuggestedUsers,
     setAuthLoading,
     setProfileData,
-    toggleFollow,
+    // toggleFollow,
     setFollowing,
     setFriends,
     setSearchData,
